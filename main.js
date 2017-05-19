@@ -1,6 +1,8 @@
 const electron = require('electron')
 // Module to control application life.
+const ipc = require('electron').ipcMain
 const app = electron.app
+const globalShortcut = electron.globalShortcut
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
@@ -39,6 +41,21 @@ function createWindow (framing, transparency) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
   createWindow();
+  globalShortcut.register('CommandOrControl+E', () => {
+    app.quit()
+})
+globalShortcut.register('CommandOrControl+N', () => {
+  	createWindow(true, true)
+})
+globalShortcut.register('CommandOrControl+F', () => {
+  	createWindow(false, false)
+})
+globalShortcut.register('CommandOrControl+S', () => {
+  	app.show()
+})
+globalShortcut.register('CommandOrControl+P', () => {
+  mainWindow.webContents.send('showSurprise')
+});
 })
 
 // Quit when all windows are closed.
